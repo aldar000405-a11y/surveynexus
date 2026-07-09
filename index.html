@@ -1,0 +1,725 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SurveyNexus â€” A survey platform built for AI workflow specialists, automation experts, and AI builders. Get matched with surveys about tools you actually use and get paid fairly.">
+  <meta name="keywords" content="AI surveys, automation specialists, n8n, paid surveys, AI workflow, survey platform">
+  <meta name="author" content="SurveyNexus">
+  <title>SurveyNexus â€” Surveys Built for AI Workflow Specialists</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-accent: #3B82F6;
+      --color-accent-hover: #2563EB;
+      --color-accent-glow: rgba(59, 130, 246, 0.35);
+      --color-accent-subtle: rgba(59, 130, 246, 0.08);
+      --color-teal: #14B8A6;
+      --color-teal-glow: rgba(20, 184, 166, 0.3);
+      --bg-950: #020617;
+      --bg-900: #0f172a;
+      --bg-800: #1e293b;
+      --bg-700: #334155;
+      --text-primary: #e2e8f0;
+      --text-secondary: #94a3b8;
+      --text-muted: #64748b;
+      --text-white: #f8fafc;
+      --border-subtle: rgba(255, 255, 255, 0.06);
+      --border-input: rgba(255, 255, 255, 0.1);
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --radius-xl: 20px;
+      --radius-full: 9999px;
+      --shadow-glow: 0 0 20px var(--color-accent-glow);
+      --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.3);
+      --shadow-lift: 0 8px 32px rgba(0, 0, 0, 0.4);
+      --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      --nav-height: 64px;
+      --transition-fast: 150ms ease;
+      --transition-base: 200ms ease;
+      --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+    body { font-family: var(--font-family); background: var(--bg-950); color: var(--text-primary); line-height: 1.6; overflow-x: hidden; }
+    body::before { content: ''; position: fixed; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, var(--color-accent), var(--color-teal), var(--color-accent)); z-index: 9999; }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button, input, select { font-family: inherit; }
+
+    .container { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    .section-label { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: var(--color-accent); margin-bottom: 12px; }
+    .section-headline { font-size: clamp(28px, 4vw, 40px); font-weight: 700; line-height: 1.15; color: var(--text-white); margin-bottom: 16px; }
+    .section-subheadline { font-size: clamp(15px, 2vw, 18px); color: var(--text-secondary); line-height: 1.7; max-width: 560px; }
+
+    .reveal { opacity: 0; transform: translateY(28px); transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1), transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
+    .reveal-delay-4 { transition-delay: 0.4s; }
+
+    /* ===== NAVBAR ===== */
+    .navbar { position: fixed; top: 0; left: 0; right: 0; height: var(--nav-height); z-index: 1000; transition: background var(--transition-smooth), box-shadow var(--transition-smooth); }
+    .navbar.scrolled { background: rgba(15, 23, 42, 0.82); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 1px 0 var(--border-subtle); }
+    .navbar .container { display: flex; align-items: center; justify-content: space-between; height: 100%; }
+    .navbar-logo { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; color: var(--text-white); letter-spacing: -0.3px; }
+    .pulse-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--color-accent); animation: pulse 2s ease-in-out infinite; flex-shrink: 0; }
+    @keyframes pulse { 0%, 100% { opacity: 1; box-shadow: 0 0 0 0 var(--color-accent-glow); } 50% { opacity: 0.7; box-shadow: 0 0 0 8px transparent; } }
+    .navbar-links { display: flex; align-items: center; gap: 32px; }
+    .navbar-links a { font-size: 13px; font-weight: 500; color: var(--text-secondary); transition: color var(--transition-fast); }
+    .navbar-links a:hover { color: var(--text-white); }
+    .hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 4px; z-index: 1010; }
+    .hamburger span { display: block; width: 22px; height: 2px; background: var(--text-primary); border-radius: 2px; transition: transform var(--transition-base), opacity var(--transition-base); }
+    .hamburger.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.active span:nth-child(2) { opacity: 0; }
+    .hamburger.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    .mobile-drawer { display: none; position: fixed; top: 0; right: 0; width: 280px; height: 100vh; background: rgba(15, 23, 42, 0.96); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); z-index: 1005; padding: 80px 32px 32px; transform: translateX(100%); transition: transform var(--transition-smooth); }
+    .mobile-drawer.open { transform: translateX(0); }
+    .mobile-drawer a { display: block; font-size: 16px; font-weight: 500; color: var(--text-secondary); padding: 14px 0; border-bottom: 1px solid var(--border-subtle); transition: color var(--transition-fast); }
+    .mobile-drawer a:hover { color: var(--text-white); }
+    .mobile-overlay { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.5); z-index: 1002; opacity: 0; transition: opacity var(--transition-smooth); }
+    .mobile-overlay.open { opacity: 1; }
+
+    /* ===== HERO ===== */
+    .hero { min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: calc(var(--nav-height) + 24px) 24px 48px; position: relative; overflow: hidden; background: linear-gradient(175deg, var(--bg-900) 0%, var(--bg-950) 100%); }
+    .hero::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(rgba(255, 255, 255, 0.025) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.025) 1px, transparent 1px); background-size: 64px 64px; pointer-events: none; }
+    .hero::after { content: ''; position: absolute; top: -20%; left: 50%; transform: translateX(-50%); width: 800px; height: 600px; background: radial-gradient(ellipse, rgba(59, 130, 246, 0.06) 0%, transparent 70%); pointer-events: none; }
+    .hero-orb { position: absolute; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.5; }
+    .hero-orb--1 { width: 300px; height: 300px; background: rgba(59, 130, 246, 0.08); top: 10%; left: -5%; animation: float-1 12s ease-in-out infinite; }
+    .hero-orb--2 { width: 250px; height: 250px; background: rgba(20, 184, 166, 0.06); bottom: 15%; right: -3%; animation: float-2 15s ease-in-out infinite; }
+    .hero-orb--3 { width: 200px; height: 200px; background: rgba(59, 130, 246, 0.05); top: 50%; left: 60%; animation: float-3 18s ease-in-out infinite; }
+    @keyframes float-1 { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(30px, -20px); } 66% { transform: translate(-15px, 15px); } }
+    @keyframes float-2 { 0%, 100% { transform: translate(0, 0); } 33% { transform: translate(-25px, 10px); } 66% { transform: translate(20px, -25px); } }
+    @keyframes float-3 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-20px, -15px); } }
+    .hero-content { position: relative; z-index: 1; max-width: 720px; }
+    .hero-badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 16px; border-radius: var(--radius-full); background: var(--color-accent-subtle); border: 1px solid rgba(59, 130, 246, 0.15); font-size: 12px; font-weight: 500; color: var(--color-accent); margin-bottom: 28px; }
+    .hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--color-accent); }
+    .hero-headline { font-size: clamp(32px, 5.5vw, 58px); font-weight: 700; line-height: 1.1; color: var(--text-white); margin-bottom: 20px; letter-spacing: -0.5px; }
+    .hero-headline span { background: linear-gradient(135deg, var(--color-accent), var(--color-teal)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-subheadline { font-size: clamp(16px, 2.2vw, 20px); color: var(--text-secondary); line-height: 1.7; margin-bottom: 36px; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .hero-ctas { display: flex; align-items: center; justify-content: center; gap: 14px; margin-bottom: 28px; flex-wrap: wrap; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; font-size: 14px; font-weight: 600; color: var(--text-white); background: var(--color-accent); border: none; border-radius: var(--radius-md); cursor: pointer; transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base); }
+    .btn-primary:hover { transform: scale(1.03); box-shadow: var(--shadow-glow); background: var(--color-accent-hover); }
+    .btn-primary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+    .btn-secondary { display: inline-flex; align-items: center; gap: 8px; padding: 12px 28px; font-size: 14px; font-weight: 600; color: var(--text-primary); background: transparent; border: 1px solid var(--bg-700); border-radius: var(--radius-md); cursor: pointer; transition: background var(--transition-base), border-color var(--transition-base); }
+    .btn-secondary:hover { background: var(--bg-800); border-color: var(--text-muted); }
+    .btn-secondary:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+    .social-proof { font-size: 13px; color: var(--text-muted); }
+    .social-proof strong { color: var(--text-secondary); font-weight: 600; }
+    .scroll-indicator { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); animation: bounce 2s ease-in-out infinite; }
+    .scroll-indicator svg { width: 24px; height: 24px; color: var(--text-muted); }
+    @keyframes bounce { 0%, 100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+    /* ===== SECTION COMMON ===== */
+    .section { padding: 96px 0; }
+    .section-dark { background: var(--bg-900); }
+    .section-medium { background: var(--bg-800); }
+
+    /* ===== PROBLEM SECTION ===== */
+    .problem-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .pain-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+    .pain-card { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); transition: background var(--transition-base); }
+    .pain-card:hover { background: rgba(255, 255, 255, 0.04); }
+    .pain-card-icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: var(--radius-sm); background: rgba(239, 68, 68, 0.1); display: flex; align-items: center; justify-content: center; }
+    .pain-card-icon svg { width: 18px; height: 18px; color: #ef4444; }
+    .pain-card-text h4 { font-size: 13px; font-weight: 600; color: var(--text-white); margin-bottom: 2px; }
+    .pain-card-text p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    /* Mock survey card (bad) - STATIC VISUAL ONLY */
+    .mock-survey-bad { background: var(--bg-800); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; position: relative; overflow: hidden; }
+    .mock-survey-bad::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: #ef4444; }
+    .mock-survey-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
+    .mock-survey-platform { font-size: 11px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; }
+    .mock-survey-payout { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: var(--radius-full); }
+    .payout-bad { background: rgba(239, 68, 68, 0.1); color: #ef4444; }
+    .payout-good { background: rgba(20, 184, 166, 0.1); color: var(--color-teal); }
+    .mock-survey-question { font-size: 16px; font-weight: 600; color: var(--text-white); margin-bottom: 16px; line-height: 1.4; }
+    .mock-survey-meta { display: flex; align-items: center; gap: 16px; font-size: 11px; color: var(--text-muted); margin-bottom: 20px; }
+    .mock-survey-meta span { display: flex; align-items: center; gap: 5px; }
+    .mock-survey-meta svg { width: 13px; height: 13px; }
+    .mock-survey-options { display: flex; flex-direction: column; gap: 8px; }
+    .mock-option { padding: 10px 14px; border-radius: var(--radius-sm); border: 1px solid var(--border-subtle); font-size: 12px; color: var(--text-secondary); background: rgba(255, 255, 255, 0.02); }
+    .mock-survey-sad { display: flex; align-items: center; gap: 8px; margin-top: 20px; font-size: 12px; color: var(--text-muted); }
+    .mock-survey-sad svg { width: 18px; height: 18px; color: var(--text-muted); }
+
+    /* ===== SOLUTION SECTION ===== */
+    .solution-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 56px; align-items: center; }
+    .mock-survey-good { background: var(--bg-900); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 28px; position: relative; overflow: hidden; }
+    .mock-survey-good::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--color-accent), var(--color-teal)); }
+    .mock-survey-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
+    .mock-tag { font-size: 10px; font-weight: 500; padding: 3px 8px; border-radius: var(--radius-full); background: var(--color-accent-subtle); color: var(--color-accent); border: 1px solid rgba(59, 130, 246, 0.12); }
+    .mock-match-badge { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; font-weight: 500; color: var(--color-teal); margin-top: 14px; }
+    .mock-match-badge svg { width: 14px; height: 14px; }
+    .feature-cards { display: flex; flex-direction: column; gap: 14px; margin-top: 28px; }
+    .feature-card { display: flex; align-items: flex-start; gap: 14px; padding: 16px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base); cursor: default; }
+    .feature-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-card); background: rgba(255, 255, 255, 0.04); }
+    .feature-card-icon { flex-shrink: 0; width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--color-accent-subtle); display: flex; align-items: center; justify-content: center; }
+    .feature-card-icon svg { width: 18px; height: 18px; color: var(--color-accent); }
+    .feature-card-text h4 { font-size: 13px; font-weight: 600; color: var(--text-white); margin-bottom: 2px; }
+    .feature-card-text p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+    .waitlist-benefits-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin-top: 36px; }
+    .waitlist-benefits-grid .feature-card { flex-direction: column; align-items: flex-start; min-height: 172px; }
+    .audience-tags { display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; margin: 28px 0 22px; }
+    .audience-tags .mock-tag { font-size: 12px; padding: 7px 12px; }
+    .trust-signals { margin: 26px auto 0; display: flex; flex-direction: column; gap: 8px; text-align: left; max-width: 430px; }
+    .trust-signal { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); }
+    .trust-signal svg { width: 14px; height: 14px; color: var(--color-teal); flex-shrink: 0; }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-header { text-align: center; margin-bottom: 56px; }
+    .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; position: relative; }
+    .timeline::before { content: ''; position: absolute; bottom: 0; left: calc(12.5% + 24px); right: calc(12.5% + 24px); height: 2px; background: var(--border-subtle); }
+    .timeline-line-progress { position: absolute; bottom: 0; left: calc(12.5% + 24px); height: 2px; width: 0; background: linear-gradient(90deg, var(--color-accent), var(--color-teal)); transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
+    .timeline.animated .timeline-line-progress { width: calc(100% - 25% - 48px); }
+    .timeline-step { text-align: center; position: relative; padding: 0 12px; }
+    .timeline-number { width: 48px; height: 48px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 18px; font-size: 16px; font-weight: 700; color: var(--text-white); background: var(--bg-800); border: 2px solid var(--border-subtle); position: relative; z-index: 2; transition: border-color 0.5s ease, background 0.5s ease; }
+    .timeline.animated .timeline-number { border-color: var(--color-accent); background: rgba(59, 130, 246, 0.1); }
+    .timeline-step h4 { font-size: 14px; font-weight: 600; color: var(--text-white); margin-bottom: 6px; }
+    .timeline-step p { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+    /* ===== BUILT IN PUBLIC ===== */
+    .bip-header { text-align: center; margin-bottom: 48px; }
+    .bip-header .section-subheadline { margin-left: auto; margin-right: auto; }
+    .tech-stack-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 48px; }
+    .tech-card { text-align: center; padding: 24px 16px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); transition: border-color var(--transition-base), background var(--transition-base); }
+    .tech-card:hover { border-color: rgba(255, 255, 255, 0.1); background: rgba(255, 255, 255, 0.04); }
+    .tech-card-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); margin: 0 auto 12px; display: flex; align-items: center; justify-content: center; background: var(--color-accent-subtle); }
+    .tech-card-icon svg { width: 22px; height: 22px; color: var(--color-accent); }
+    .tech-card h4 { font-size: 13px; font-weight: 600; color: var(--text-white); margin-bottom: 4px; }
+    .tech-card p { font-size: 11px; color: var(--text-muted); }
+    .stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-bottom: 40px; }
+    .stat-card { text-align: center; padding: 24px; border-radius: var(--radius-md); background: rgba(255, 255, 255, 0.02); border: 1px solid var(--border-subtle); }
+    .stat-number { font-size: clamp(28px, 4vw, 36px); font-weight: 700; color: var(--text-white); margin-bottom: 4px; font-variant-numeric: tabular-nums; }
+    .stat-label { font-size: 12px; color: var(--text-muted); }
+    .bip-cta { text-align: center; }
+
+    /* ===== WAITLIST SECTION ===== */
+    .waitlist-section { padding: 96px 0; background: var(--bg-900); position: relative; overflow: hidden; }
+    .waitlist-section::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 240px; background: linear-gradient(to bottom, transparent, rgba(59, 130, 246, 0.04)); pointer-events: none; }
+    .waitlist-inner { text-align: center; max-width: 520px; margin: 0 auto; position: relative; z-index: 1; }
+    .waitlist-form { margin-top: 36px; display: flex; flex-direction: column; gap: 14px; text-align: left; }
+    .form-group label { display: block; font-size: 12px; font-weight: 500; color: var(--text-secondary); margin-bottom: 6px; }
+    .form-input { width: 100%; padding: 12px 16px; font-size: 14px; color: var(--text-primary); background: var(--bg-800); border: 1px solid var(--border-input); border-radius: var(--radius-md); transition: border-color var(--transition-base), box-shadow var(--transition-base); outline: none; }
+    .form-input::placeholder { color: var(--text-muted); }
+    .form-input:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12); }
+    .form-select { width: 100%; padding: 12px 16px; font-size: 14px; color: var(--text-primary); background: var(--bg-800); border: 1px solid var(--border-input); border-radius: var(--radius-md); transition: border-color var(--transition-base), box-shadow var(--transition-base); outline: none; cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2394a3b8' viewBox='0 0 16 16'%3E%3Cpath d='M4.646 5.646a.5.5 0 0 1 .708 0L8 8.293l2.646-2.647a.5.5 0 0 1 .708.708l-3 3a.5.5 0 0 1-.708 0l-3-3a.5.5 0 0 1 0-.708z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 40px; }
+    .form-select:focus { border-color: var(--color-accent); box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.12); }
+    .form-select option { background: var(--bg-800); color: var(--text-primary); }
+    .btn-submit { width: 100%; padding: 14px; font-size: 14px; font-weight: 600; color: var(--text-white); background: var(--color-accent); border: none; border-radius: var(--radius-md); cursor: pointer; transition: transform var(--transition-base), box-shadow var(--transition-base), background var(--transition-base); margin-top: 4px; }
+    .btn-submit:hover { transform: scale(1.02); box-shadow: var(--shadow-glow); background: var(--color-accent-hover); }
+    .btn-submit:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 2px; }
+    .form-privacy { text-align: center; font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+    .form-success { display: none; text-align: center; padding: 32px 0; }
+    .form-success .discord-cta { margin-top: 24px; }
+    .form-success.show { display: block; }
+    .form-success-icon { width: 56px; height: 56px; border-radius: 50%; background: rgba(20, 184, 166, 0.1); display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; }
+    .form-success-icon svg { width: 28px; height: 28px; color: var(--color-teal); }
+    .form-success h3 { font-size: 20px; font-weight: 700; color: var(--text-white); margin-bottom: 8px; }
+    .form-success p { font-size: 14px; color: var(--text-secondary); margin-bottom: 16px; }
+    .form-success .counter-badge { display: inline-block; font-size: 13px; font-weight: 600; color: var(--color-accent); padding: 6px 16px; border-radius: var(--radius-full); background: var(--color-accent-subtle); border: 1px solid rgba(59, 130, 246, 0.12); margin-bottom: 20px; }
+
+    /* ===== FOOTER ===== */
+    .footer { background: var(--bg-950); border-top: 1px solid var(--border-subtle); padding: 32px 0; }
+    .footer .container { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; }
+    .footer-brand { font-size: 13px; color: var(--text-muted); }
+    .footer-brand strong { color: var(--text-secondary); font-weight: 600; }
+    .footer-links { display: flex; gap: 24px; }
+    .footer-links a { font-size: 12px; color: var(--text-muted); transition: color var(--transition-fast); }
+    .footer-links a:hover { color: var(--text-secondary); }
+    .footer-copy { font-size: 12px; color: var(--text-muted); }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 1024px) {
+      .problem-grid, .solution-grid { gap: 40px; }
+      .tech-stack-grid { grid-template-columns: repeat(2, 1fr); }
+      .stats-row { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .navbar-links { display: none; }
+      .hamburger { display: flex; }
+      .mobile-drawer { display: block; }
+      .problem-grid, .solution-grid { grid-template-columns: 1fr; gap: 40px; }
+      .solution-grid .solution-visual { order: -1; }
+      .timeline { grid-template-columns: 1fr; gap: 32px; padding-left: 40px; }
+      .timeline::before { top: 0; bottom: 0; left: 16px; right: auto; width: 2px; height: 100%; }
+      .timeline-line-progress { top: 0; left: 16px; width: 2px !important; height: 0; }
+      .timeline.animated .timeline-line-progress { height: 100%; width: 2px !important; }
+      .timeline-step { text-align: left; padding: 0; }
+      .timeline-number { position: absolute; left: -40px; top: 0; width: 32px; height: 32px; font-size: 13px; margin: 0; }
+      .stats-row { grid-template-columns: 1fr; gap: 12px; }
+      .footer .container { flex-direction: column; text-align: center; }
+      .section { padding: 64px 0; }
+    }
+    @media (max-width: 640px) {
+      .hero-headline { font-size: 28px; }
+      .hero-subheadline { font-size: 15px; }
+      .hero-ctas { flex-direction: column; width: 100%; }
+      .hero-ctas .btn-primary, .hero-ctas .btn-secondary { width: 100%; justify-content: center; }
+      .waitlist-benefits-grid { grid-template-columns: 1fr; }
+      .tech-stack-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .tech-card { padding: 16px 12px; }
+    }
+  </style>
+<base target="_blank">
+</head>
+<body>
+
+  <!-- ===== NAVBAR ===== -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container">
+      <a href="#" class="navbar-logo" aria-label="SurveyNexus Home">
+        SurveyNexus
+        <span class="pulse-dot" aria-hidden="true"></span>
+      </a>
+      <div class="navbar-links" id="navLinks">
+        <a href="#about">About</a>
+        <a href="#how-it-works">How It Works</a>
+        <a href="#waitlist">Waitlist</a>
+      </div>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle navigation menu" aria-expanded="false">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <div class="mobile-overlay" id="mobileOverlay"></div>
+  <div class="mobile-drawer" id="mobileDrawer" role="dialog" aria-label="Navigation menu">
+    <a href="#about" class="mobile-link">About</a>
+    <a href="#how-it-works" class="mobile-link">How It Works</a>
+    <a href="#waitlist" class="mobile-link">Waitlist</a>
+  </div>
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="hero">
+    <div class="hero-orb hero-orb--1" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--2" aria-hidden="true"></div>
+    <div class="hero-orb hero-orb--3" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="hero-badge-dot" aria-hidden="true"></span>
+        Built in Public with n8n + AI
+      </div>
+      <h1 class="hero-headline reveal reveal-delay-1">
+        A Survey Platform Actually Built for <span>AI Workflow Specialists</span>
+      </h1>
+      <p class="hero-subheadline reveal reveal-delay-2">
+        Tired of surveys about shampoo brands when you build AI automation pipelines? We match automation experts with surveys about the tools they actually use â€” and pay fairly for specialized insights.
+      </p>
+      <div class="hero-ctas reveal reveal-delay-3">
+        <a href="https://discord.gg/U8a2mbSqh" class="btn-primary" target="_blank" rel="noopener noreferrer" onclick="window.open('https://discord.gg/U8a2mbSqh', '_blank'); return true;">
+          Join the Waitlist
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+    <div class="scroll-indicator" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </div>
+  </section>
+
+  <!-- ===== PROBLEM SECTION ===== -->
+  <section class="section section-dark" id="about">
+    <div class="container">
+      <div class="problem-grid">
+        <div class="problem-text">
+          <span class="section-label reveal">The Problem</span>
+          <h2 class="section-headline reveal reveal-delay-1">Pennies for Your Expertise?</h2>
+          <p class="section-subheadline reveal reveal-delay-2">
+            You build complex AI automation pipelines. You design workflows that save companies thousands of hours. But mainstream survey platforms treat you the same as someone answering questions about toothpaste preferences.
+          </p>
+          <div class="pain-cards">
+            <div class="pain-card reveal reveal-delay-1">
+              <div class="pain-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="m15 9-6 6"/><path d="m9 9 6 6"/></svg>
+              </div>
+              <div class="pain-card-text">
+                <h4>Irrelevant Surveys</h4>
+                <p>Generic consumer surveys about products you don't use and don't care about.</p>
+              </div>
+            </div>
+            <div class="pain-card reveal reveal-delay-2">
+              <div class="pain-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+              </div>
+              <div class="pain-card-text">
+                <h4>Insulting Payouts</h4>
+                <p>Earn a fraction of a dollar for sharing expert-level knowledge and specialized insights.</p>
+              </div>
+            </div>
+            <div class="pain-card reveal reveal-delay-3">
+              <div class="pain-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              </div>
+              <div class="pain-card-text">
+                <h4>Time Wasted</h4>
+                <p>30-minute surveys for pocket change. Your time is worth more than that.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="problem-visual reveal">
+          <div class="mock-survey-bad">
+            <div class="mock-survey-header">
+              <span class="mock-survey-platform">GenericSurveys.com</span>
+              <span class="mock-survey-payout payout-bad">$0.15 payout</span>
+            </div>
+            <p class="mock-survey-question">How often do you buy shampoo?</p>
+            <div class="mock-survey-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>25 minutes</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>General Audience</span>
+            </div>
+            <div class="mock-survey-options">
+              <div class="mock-option">Daily</div>
+              <div class="mock-option">Weekly</div>
+              <div class="mock-option">Monthly</div>
+              <div class="mock-option">I don't buy shampoo</div>
+            </div>
+            <div class="mock-survey-sad">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg>
+              This has nothing to do with your expertise
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== SOLUTION SECTION ===== -->
+  <section class="section section-medium">
+    <div class="container">
+      <div class="solution-grid">
+        <div class="solution-visual reveal">
+          <div class="mock-survey-good">
+            <div class="mock-survey-header">
+              <span class="mock-survey-platform">SurveyNexus</span>
+              <span class="mock-survey-payout payout-good">Fair payout</span>
+            </div>
+            <p class="mock-survey-question">AI Workflow Automation Survey</p>
+            <div class="mock-survey-meta">
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>15 minutes</span>
+              <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>Matched to your profile</span>
+            </div>
+            <div class="mock-survey-tags">
+              <span class="mock-tag">n8n</span>
+              <span class="mock-tag">Workflow Automation</span>
+              <span class="mock-tag">AI Pipelines</span>
+              <span class="mock-tag">LLM Integration</span>
+            </div>
+            <div class="mock-survey-options">
+              <div class="mock-option">Which LLM providers do you integrate with most frequently?</div>
+              <div class="mock-option">How do you handle error recovery in multi-step workflows?</div>
+              <div class="mock-option">What is your average pipeline complexity (number of nodes)?</div>
+            </div>
+            <div class="mock-match-badge">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              98% match to your profile
+            </div>
+          </div>
+        </div>
+        <div class="solution-text">
+          <span class="section-label reveal">Our Solution</span>
+          <h2 class="section-headline reveal reveal-delay-1">Surveys About Tools You Actually Use</h2>
+          <p class="section-subheadline reveal reveal-delay-2">
+            Companies building AI automation tools desperately need feedback from actual workflow builders. We connect those companies directly with specialists like you.
+          </p>
+          <div class="feature-cards">
+            <div class="feature-card reveal reveal-delay-1">
+              <div class="feature-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M11 8v6"/><path d="M8 11h6"/></svg>
+              </div>
+              <div class="feature-card-text">
+                <h4>Smart Matching</h4>
+                <p>AI matches surveys to your specific automation tools, platforms, and expertise areas.</p>
+              </div>
+            </div>
+            <div class="feature-card reveal reveal-delay-2">
+              <div class="feature-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="14" x="2" y="5" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+              </div>
+              <div class="feature-card-text">
+                <h4>Fair Pay</h4>
+                <p>Professional insights deserve professional rates. No more pennies for expert knowledge.</p>
+              </div>
+            </div>
+            <div class="feature-card reveal reveal-delay-3">
+              <div class="feature-card-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              </div>
+              <div class="feature-card-text">
+                <h4>Fast Payouts</h4>
+                <p>48 hours, not 4 weeks. Because you shouldn't have to wait a month to get paid.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-medium">
+    <div class="container">
+      <div style="display:grid; grid-template-columns:auto 1fr; gap:24px; align-items:center; max-width:600px; margin:0 auto;">
+        <div style="width:80px; height:80px; border-radius:50%; background:linear-gradient(135deg, var(--color-accent), var(--color-teal)); display:flex; align-items:center; justify-content:center; font-size:28px; font-weight:700; color:var(--text-white);">MS</div>
+        <div>
+          <p style="font-size:14px; color:var(--text-secondary); line-height:1.6; margin-bottom:8px;">
+            "I'm Mohummad Sultan, an n8n AI automation specialist. I spent hours on survey platforms earning pennies for irrelevant questions. Now I'm building something that actually respects the time and expertise of people who build AI workflows."
+          </p>
+          <p style="font-size:12px; color:var(--text-muted);">— Mohummad Sultan, Founder</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== HOW IT WORKS ===== -->
+  <section class="section section-dark" id="how-it-works">
+    <div class="container">
+      <div class="how-header">
+        <span class="section-label reveal">Step by Step</span>
+        <h2 class="section-headline reveal reveal-delay-1">How It Works</h2>
+        <p class="section-subheadline reveal reveal-delay-2" style="margin-left:auto;margin-right:auto;">
+          From signup to payout in four simple steps. No complexity, no hidden catches.
+        </p>
+      </div>
+      <div class="timeline reveal" id="timeline">
+        <div class="timeline-line-progress"></div>
+        <div class="timeline-step reveal reveal-delay-1">
+          <div class="timeline-number">1</div>
+          <h4>Sign Up</h4>
+          <p>Create your profile with the AI tools and platforms you work with daily.</p>
+        </div>
+        <div class="timeline-step reveal reveal-delay-2">
+          <div class="timeline-number">2</div>
+          <h4>Get Matched</h4>
+          <p>Our AI finds surveys that are relevant to your specific automation stack.</p>
+        </div>
+        <div class="timeline-step reveal reveal-delay-3">
+          <div class="timeline-number">3</div>
+          <h4>Share Insights</h4>
+          <p>Answer thoughtfully. Most surveys take just 10 to 20 minutes of your time.</p>
+        </div>
+        <div class="timeline-step reveal reveal-delay-4">
+          <div class="timeline-number">4</div>
+          <h4>Get Paid</h4>
+          <p>Fair payout within 48 hours. Straightforward, no minimum thresholds.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHO IS THIS FOR ===== -->
+  <section class="section section-dark">
+    <div class="container">
+      <div class="how-header">
+        <span class="section-label reveal">Audience</span>
+        <h2 class="section-headline reveal reveal-delay-1">Built Specifically For</h2>
+        <div class="audience-tags reveal reveal-delay-2">
+          <span class="mock-tag">n8n Automation Builders</span>
+          <span class="mock-tag">Make (Integromat) Specialists</span>
+          <span class="mock-tag">Zapier Power Users</span>
+          <span class="mock-tag">Custom AI Pipeline Developers</span>
+        </div>
+        <p class="section-subheadline reveal reveal-delay-3" style="margin-left:auto;margin-right:auto;">
+          If you build workflows that connect AI tools, APIs, and data sources â€” this platform is designed for you.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section section-medium">
+    <div class="container">
+      <div style="text-align:center; margin-bottom:48px;">
+        <span class="section-label reveal">Benefits</span>
+        <h2 class="section-headline reveal reveal-delay-1">What You Get as a Waitlist Member</h2>
+      </div>
+      <div style="display:grid; grid-template-columns:repeat(2, 1fr); gap:16px; max-width:720px; margin:0 auto;">
+        <div class="feature-card reveal reveal-delay-1">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h4>Early Access</h4>
+            <p>Be the first to test the platform before public launch. Your feedback shapes the product.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal reveal-delay-2">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h4>Priority Matching</h4>
+            <p>Waitlist members get first access to the best surveys. First come, first served.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal reveal-delay-3">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h4>Direct Line to Founder</h4>
+            <p>Join our Discord and talk directly to me. No corporate layers, no support tickets.</p>
+          </div>
+        </div>
+        <div class="feature-card reveal reveal-delay-4">
+          <div class="feature-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          </div>
+          <div class="feature-card-text">
+            <h4>Zero Risk</h4>
+            <p>No payment required. No commitment. Join the waitlist, leave anytime.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WAITLIST SECTION ===== -->
+  <section class="waitlist-section" id="waitlist">
+    <div class="container">
+      <div class="waitlist-inner">
+        <span class="section-label reveal">Early Access</span>
+        <h2 class="section-headline reveal reveal-delay-1">Be Among the First</h2>
+        <p style="font-size:13px; color:var(--color-teal); text-align:center; margin-bottom:20px;">
+          Limited to the first 100 waitlist members
+        </p>
+        <p class="section-subheadline reveal reveal-delay-2" style="margin-left:auto;margin-right:auto;">
+          Join the waitlist to get early access and priority matching to surveys about the AI tools you actually use.
+        </p>
+        <div class="trust-signals reveal reveal-delay-3">
+          <div class="trust-signal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span>No spam. We hate it too.</span>
+          </div>
+          <div class="trust-signal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span>Built in public â€” see the code, the process, the mistakes.</span>
+          </div>
+          <div class="trust-signal">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>
+            <span>Your email is only used for launch updates. Unsubscribe anytime.</span>
+          </div>
+        </div>
+
+        <form class="waitlist-form reveal reveal-delay-3" id="waitlistForm">
+          <button type="submit" class="btn-submit" id="submitBtn">Join the Waitlist</button>
+          <p class="form-privacy">No spam. Unsubscribe anytime.</p>
+        </form>
+
+        <div class="form-success" id="formSuccess">
+          <div class="form-success-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3>You're In</h3>
+          <p>Thanks for joining the waitlist. We'll email you soon with next steps.</p>
+          <a href="https://discord.gg/U8a2mbSqh" class="btn-primary discord-cta" target="_blank" rel="noopener noreferrer" onclick="window.open('https://discord.gg/U8a2mbSqh', '_blank'); return true;">Join the Discord Community</a>
+          <div style="margin-top:32px; padding:24px; border-radius:var(--radius-md); background:rgba(255,255,255,0.02); border:1px solid var(--border-subtle);">
+            <h4 style="font-size:14px; color:var(--text-white); margin-bottom:16px;">What happens next?</h4>
+            <div style="display:flex; flex-direction:column; gap:12px;">
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:var(--color-accent-subtle); color:var(--color-accent); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">1</div>
+                <p style="font-size:13px; color:var(--text-secondary);">Check your email for confirmation</p>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:var(--color-accent-subtle); color:var(--color-accent); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">2</div>
+                <p style="font-size:13px; color:var(--text-secondary);">Join our Discord community</p>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:var(--color-accent-subtle); color:var(--color-accent); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">3</div>
+                <p style="font-size:13px; color:var(--text-secondary);">Help shape the platform with feedback</p>
+              </div>
+              <div style="display:flex; align-items:center; gap:12px;">
+                <div style="width:28px; height:28px; border-radius:50%; background:var(--color-accent-subtle); color:var(--color-accent); display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700;">4</div>
+                <p style="font-size:13px; color:var(--text-secondary);">Be first to earn when we launch</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-brand">
+        <strong>SurveyNexus</strong> Built with care by an n8n automation specialist
+      </div>
+      <div class="footer-links">
+        <a href="https://discord.gg/U8a2mbSqh" target="_blank" rel="noopener noreferrer" onclick="window.open('https://discord.gg/U8a2mbSqh', '_blank'); return true;">Discord</a>
+        <a href="https://x.com/SultanMohu83700" target="_blank" rel="noopener noreferrer">Twitter / X</a>
+        <a href="https://github.com/aldar000405-a11y" target="_blank" rel="noopener noreferrer">GitHub</a>
+        <a href="mailto:mohummadsultan0@gmail.com">Contact</a>
+      </div>
+      <div class="footer-copy">2026 SurveyNexus</div>
+    </div>
+  </footer>
+
+  <script>
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => { navbar.classList.toggle('scrolled', window.scrollY > 20); }, { passive: true });
+
+    const hamburgerBtn = document.getElementById('hamburgerBtn');
+    const mobileDrawer = document.getElementById('mobileDrawer');
+    const mobileOverlay = document.getElementById('mobileOverlay');
+    function toggleMobileMenu() {
+      const isOpen = mobileDrawer.classList.contains('open');
+      hamburgerBtn.classList.toggle('active');
+      hamburgerBtn.setAttribute('aria-expanded', !isOpen);
+      if (isOpen) { mobileDrawer.classList.remove('open'); mobileOverlay.classList.remove('open'); setTimeout(() => mobileOverlay.style.display = 'none', 300); }
+      else { mobileOverlay.style.display = 'block'; requestAnimationFrame(() => { mobileDrawer.classList.add('open'); mobileOverlay.classList.add('open'); }); }
+    }
+    hamburgerBtn.addEventListener('click', toggleMobileMenu);
+    mobileOverlay.addEventListener('click', toggleMobileMenu);
+    document.querySelectorAll('.mobile-link').forEach(link => link.addEventListener('click', () => { if (mobileDrawer.classList.contains('open')) toggleMobileMenu(); }));
+
+    const revealObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('visible'); revealObserver.unobserve(entry.target); } }); }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
+
+    const timeline = document.getElementById('timeline');
+    if (timeline) { const timelineObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('animated'); timelineObserver.unobserve(entry.target); } }); }, { threshold: 0.3 }); timelineObserver.observe(timeline); }
+
+    const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+    function animateCounter(el) {
+      const target = parseInt(el.dataset.target, 10);
+      const prefix = el.dataset.prefix || '';
+      const suffix = el.dataset.suffix || '';
+      const duration = 1500;
+      const startTime = performance.now();
+      function update(currentTime) {
+        const elapsed = currentTime - startTime;
+        const progress = Math.min(elapsed / duration, 1);
+        const eased = 1 - Math.pow(1 - progress, 3);
+        el.textContent = prefix + Math.round(eased * target).toLocaleString() + suffix;
+        if (progress < 1) requestAnimationFrame(update);
+      }
+      requestAnimationFrame(update);
+    }
+    const counterObserver = new IntersectionObserver((entries) => { entries.forEach(entry => { if (entry.isIntersecting) { animateCounter(entry.target); counterObserver.unobserve(entry.target); } }); }, { threshold: 0.5 });
+    statNumbers.forEach(el => counterObserver.observe(el));
+
+    const waitlistForm = document.getElementById('waitlistForm');
+    const formSuccess = document.getElementById('formSuccess');
+    const positionBadge = document.getElementById('positionBadge');
+    waitlistForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      waitlistForm.style.display = 'none';
+      formSuccess.classList.add('show');
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+        const targetEl = document.querySelector(targetId);
+        if (targetEl) { e.preventDefault(); targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+      });
+    });
+  </script>
+</body>
+</html>
